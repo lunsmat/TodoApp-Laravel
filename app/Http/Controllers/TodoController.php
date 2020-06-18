@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class TodoController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $list = DB::select("SELECT * FROM todos");
 
@@ -16,14 +16,26 @@ class TodoController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create()
     {
         return view('todo.create');
     }
 
     public function store(Request $request)
     {
+        if ($request->filled('title')) {
+            $title = $request->input('title');
 
+            DB::insert('INSERT INTO todos (title) VALUES (:title)', [
+                'title' => $title
+            ]);
+
+            return redirect()->route('todo.index');
+        } else {
+            return redirect()
+                ->route('todo.add')
+                ->with("warning", "You don't have send a title");
+        }
     }
 
     public function update(Request $request, $id)
