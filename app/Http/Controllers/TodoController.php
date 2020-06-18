@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Todo;
 
 class TodoController extends Controller
 {
     public function index()
     {
-        $list = DB::select("SELECT * FROM todos");
+        $list = Todo::all(); // With eloquent ORM
 
         return view('todo.index', [
             'list' => $list
@@ -29,22 +29,20 @@ class TodoController extends Controller
 
         $title = $request->input('title');
 
-            DB::insert('INSERT INTO todos (title) VALUES (:title)', [
-                'title' => $title
-            ]);
+        $todo = new Todo();
+        $todo->title = $title;
+        $todo->save();
 
-            return redirect()->route('todo.index');
+        return redirect()->route('todo.index');
     }
 
     public function update($id)
     {
-        $data = DB::select("SELECT * FROM todos WHERE id = :id", [
-            'id' => $id
-        ]);
+        $data = Todo::find($id);
 
-        if (count($data) > 0) {
+        if ($data) {
             return view('todo.update', [
-                'data' => $data[0]
+                'data' => $data
             ]);
         }
         return redirect()->route('todo.index');
@@ -57,44 +55,26 @@ class TodoController extends Controller
         ]);
 
         $title = $request->input('title');
-        DB::update("UPDATE todos SET title = :title WHERE id = :id", [
-            'title' => $title,
-            'id' => $id
-        ]);
+
+        Todo::find($id)->update(['title' => $title]);
 
         return redirect()->route('todo.index');
     }
 
     public function delete($id)
     {
-        DB::delete('DELETE FROM todos WHERE id = :id', ['id' => $id]);
+        Todo::find($id)->delete();
 
         return redirect()->route('todo.index');
     }
 
     public function resolve($id)
     {
-        // option 1: Verify if exists and update
-        // $data = DB::select('SELECT * FROM todos WHERE id = :id', [
-        //     'id' => $id
-        // ]);
-
-        // if(count($data) > 0) {
-        //     if ($data[0]->resolved === 1) {
-        //         DB::update("UPDATE todos SET resolved = 0 WHERE id = :id", [
-        //             'id' => $id
-        //         ]);
-        //     } else {
-        //         DB::update("UPDATE todos SET resolved = 1 WHERE id = :id", [
-        //             'id' => $id
-        //         ]);
-        //     }
-        // }
-
-        // option 2: logic update
-        DB::update('UPDATE todos SET resolved = 1 - resolved WHERE id = :id', [
-            'id' => $id
-        ]);
+        $todo = Todo::find($id);
+        if ($todo) {
+            $todo->resolved = 1 - $todo->resolved;
+            $todo->save();
+        }
 
         return redirect()->route('todo.index');
     }
