@@ -4,12 +4,11 @@
 @section('content')
     <h1>Edit a Todo</h1>
 
-    @if (session('warning'))
+    @if ($errors->any())
         <x-alert>
-            @slot('type')
-                Error
-            @endslot
-            {{ session('warning') }}
+            @foreach ($errors->all() as $error)
+                {{$error}}<br />
+            @endforeach
         </x-alert>
     @endif
 

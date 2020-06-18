@@ -23,18 +23,17 @@ class TodoController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->filled('title')) {
-            $title = $request->input('title');
+        $request->validate([
+            'title' => [ 'required', 'string', 'max:128' ]
+        ]);
+
+        $title = $request->input('title');
 
             DB::insert('INSERT INTO todos (title) VALUES (:title)', [
                 'title' => $title
             ]);
 
             return redirect()->route('todo.index');
-        }
-        return redirect()
-            ->route('todo.add')
-            ->with("warning", "You don't have send a title");
     }
 
     public function update($id)
@@ -53,23 +52,17 @@ class TodoController extends Controller
 
     public function updateAction(Request $request, $id)
     {
-        if ($request->filled('title')) {
-            $data = DB::select("SELECT * FROM todos WHERE id = :id", [
-                'id' => $id
-            ]);
+        $request->validate([
+            'title' => [ 'required', 'string', 'max:128' ]
+        ]);
 
-            if (count($data) > 0) {
-                $title = $request->input('title');
-                DB::update("UPDATE todos SET title = :title WHERE id = :id", [
-                    'title' => $title,
-                    'id' => $id
-                ]);
-            }
-            return redirect()->route('todo.index');
-        }
-        return redirect()
-            ->route('todo.edit', ['id' => $id])
-            ->with("warning", "You don't have send a title");
+        $title = $request->input('title');
+        DB::update("UPDATE todos SET title = :title WHERE id = :id", [
+            'title' => $title,
+            'id' => $id
+        ]);
+
+        return redirect()->route('todo.index');
     }
 
     public function delete($id)
