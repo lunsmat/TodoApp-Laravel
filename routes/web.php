@@ -16,19 +16,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController');
 Route::view('/test', 'teste');
 
-Route::prefix('/todos')->group(function () {
+Route::prefix('/todo')->group(function () {
 
-    Route::get('/', 'TodoController@index'); // List of Todos
+    Route::get('/', 'TodoController@index')->name('todo.index'); // List of Todos
 
-    Route::get('add', 'TodoController@create'); // Screen to add a new todo
+    Route::get('add', 'TodoController@create')->name('todo.add'); // Screen to add a new todo
     Route::post('add', 'TodoController@store'); // Action of add a new todo
 
-    Route::get('edit/{id}', 'TodoController@update'); // Screen to edit a todo
+    Route::get('edit/{id}', 'TodoController@update')->name('todo.edit'); // Screen to edit a todo
     Route::post('edit/{id}', 'TodoController@updateAction'); // Action of edit a todo
 
-    Route::get('delete/{id}', 'TodoController@delete'); // Action of delete a todo
+    Route::get('delete/{id}', 'TodoController@delete')->name('todo.del'); // Action of delete a todo
 
-    Route::get('resolved/{id}', 'TodoController@resolve'); // Action of resolve or unresolve a todo
+    Route::get('resolve/{id}', 'TodoController@resolve')->name('todo.done'); // Action of resolve or unresolve a todo
 
 });
 

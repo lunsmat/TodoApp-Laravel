@@ -8,17 +8,17 @@
 </head>
 <body>
     <header>
-        <h1>Cabeçalho</h1>
+        <h1>Header</h1>
     </header>
     <hr />
 
     <section>
-        @yield('content');
+        @yield('content')
     </section>
     <hr />
 
     <footer>
-        Rodapé
+        Footer
     </footer>
 </body>
 </html>
