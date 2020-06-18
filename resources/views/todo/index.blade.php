@@ -13,7 +13,7 @@
                 <a href={{ route('todo.done', ['id' => $item->id]) }}>[ @if ($item->resolved) unmark @else mark @endif ]</a>
                 {{$item->title}}
                 <a href={{ route('todo.edit', ['id' => $item->id]) }}>[ Edit ]</a>
-                <a href={{ route('todo.del', ['id' => $item->id]) }}>[ Delete ]</a>
+                <a href={{ route('todo.del', ['id' => $item->id]) }} onclick="return confirm('You sure that you wish delete?')">[ Delete ]</a>
             </li>
         @endforeach
         </ul>

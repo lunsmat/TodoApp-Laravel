@@ -74,7 +74,9 @@ class TodoController extends Controller
 
     public function delete(Request $request, $id)
     {
+        DB::delete('DELETE FROM todos WHERE id = :id', ['id' => $id]);
 
+        return redirect()->route('todo.index');
     }
 
     public function resolve(Request $request, $id)
