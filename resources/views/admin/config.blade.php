@@ -4,6 +4,8 @@
 @section('content')
     <h1>Configurações</h1>
 
+    <a href="/logout">Sair</a>
+
     <x-alert>
         @slot('type')
             Error 404
