@@ -16,6 +16,20 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController');
 Route::view('/test', 'teste');
 
+// Route::resource('todo', 'TodoTestController');
+/**
+ * Routes created by resource
+ *
+ *
+ * GET - /todo - index - TodoTestController.index - List The Todos
+ * GET - /todo/create - create - TodoTestController.create - Form to create Todo
+ * POST /todo - store - TodoTestController.store - Store the Todo
+ * GET /todo/{id} - show - TodoTestController.show - Get a todo
+ * GET /todo/{id}/edit - edit - TodoTestController.edit - Form to edit a Todo
+ * PUT /todo/{id} - update - TodoTestController.update - Update a Todo
+ * DELETE - destroy - TodoTestController.destroy - Delete a Todo
+ */
+
 Route::prefix('/todo')->group(function () {
 
     Route::get('/', 'TodoController@index')->name('todo.index'); // List of Todos
